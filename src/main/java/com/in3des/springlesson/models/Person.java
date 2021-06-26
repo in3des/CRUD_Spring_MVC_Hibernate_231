@@ -1,9 +1,24 @@
 package com.in3des.springlesson.models;
 
+
+
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class Person {
     private int id;
+
+    @NotEmpty(message = "Name field should not be blank")
+    @Size(min = 2, max = 30, message = "Please correct name size")
     private String name;
+
+    @NotEmpty(message = "Surname field should not be blank")
+    @Size(min = 2, max = 30, message = "Please correct surname size")
     private String surname;
+
+    @Min(value = 0, message = "Age should be a positive value")
     private int age;
 
     public Person() {}
