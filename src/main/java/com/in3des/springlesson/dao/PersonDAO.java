@@ -60,7 +60,7 @@ public class PersonDAO {
                 person.setId(resultSet.getInt("id"));
                 person.setName(resultSet.getString("name"));
                 person.setSurname(resultSet.getString("surname"));
-                person.setId(resultSet.getInt("age"));
+                person.setAge(resultSet.getInt("age"));
 
                 people.add(person);
             }
