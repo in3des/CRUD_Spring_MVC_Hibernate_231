@@ -16,12 +16,12 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     @NotEmpty(message = "Name field should not be blank")
     @Size(min = 2, max = 30, message = "Please correct name size")
     private String name;
 
-    @Column(name = "surname")
+    @Column(name = "surname", nullable = false)
     @NotEmpty(message = "Surname field should not be blank")
     @Size(min = 2, max = 30, message = "Please correct surname size")
     private String surname;
