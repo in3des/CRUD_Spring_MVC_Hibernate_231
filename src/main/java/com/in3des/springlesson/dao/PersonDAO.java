@@ -2,8 +2,8 @@ package com.in3des.springlesson.dao;
 
 import com.in3des.springlesson.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -14,130 +14,37 @@ import java.util.List;
 //@PropertySource("classpath:db.properties")
 public class PersonDAO {
 
+    private final JdbcTemplate jdbcTemplate;
+
 //    @Autowired
 //    private static Environment env;
 
-    private static int PEOPLE_ID;
-
-    private static Connection connection;
-
-    private static String url="jdbc:mysql://localhost:3306/hiber_231?verifyServerCertificate=false&useSSL=false&requireSSL=false&useLegacyDatetimeCode=false&amp&serverTimezone=UTC";
-    private static String username="root";
-    private static String password="root";
-
-//    static {
-//        try {
-//            connection = DriverManager.getConnection(env.getProperty("db.url"), env.getProperty("db.username"), env.getProperty("db.password"));
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
-//    }
-
-    static {
-
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    @Autowired
+    public PersonDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Person> index() {
-        List<Person> people = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            String SQL = "SELECT * FROM Person";
-            ResultSet resultSet = statement.executeQuery(SQL);
-
-            while (resultSet.next()) {
-                Person person = new Person();
-                person.setId(resultSet.getInt("id"));
-                person.setName(resultSet.getString("name"));
-                person.setSurname(resultSet.getString("surname"));
-                person.setAge(resultSet.getInt("age"));
-
-                people.add(person);
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return people;
+        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person show(final int id) {
-
-        Person person = new Person();
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Person WHERE id=?");
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            person.setId(resultSet.getInt("id"));
-            person.setName(resultSet.getString("name"));
-            person.setSurname(resultSet.getString("surname"));
-            person.setAge(resultSet.getInt("age"));
-
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return person;
+        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
 
     public void save(Person person) {
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Person VALUES (1, ?, ?, ?)");
-            preparedStatement.setString(1, person.getName());
-            preparedStatement.setString(2, person.getSurname());
-            preparedStatement.setInt(3, person.getAge());
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
+        jdbcTemplate.update("INSERT INTO Person VALUES (1, ?, ?, ?)", person.getName(), person.getSurname(), person.getAge());
     }
 
     public void update(Person updatedPerson, int id) {
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE Person SET name=?, surname=?, age=? WHERE id=?");
-            preparedStatement.setInt(4, id);
-            preparedStatement.setString(1, updatedPerson.getName());
-            preparedStatement.setString(2, updatedPerson.getSurname());
-            preparedStatement.setInt(3, updatedPerson.getAge());
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
+        jdbcTemplate.update("UPDATE Person SET name=?, surname=?, age=? WHERE id=?", updatedPerson.getName(), updatedPerson.getSurname(),
+                updatedPerson.getAge(), id);
     }
 
     public void delete(int id) {
-
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM Person WHERE id=?");
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-
+        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
+
 
 }
 
