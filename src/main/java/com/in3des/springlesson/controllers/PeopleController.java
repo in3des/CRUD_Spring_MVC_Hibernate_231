@@ -3,6 +3,7 @@ package com.in3des.springlesson.controllers;
 import com.in3des.springlesson.dao.PersonDAO;
 import com.in3des.springlesson.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 @RequestMapping("/people")
 public class PeopleController {
 
+
     private final PersonDAO personDAO;
 
     @Autowired
@@ -23,13 +25,13 @@ public class PeopleController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", personDAO.index());
+        model.addAttribute("people", this.personDAO.index());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", this.personDAO.show(id));
         return "people/show";
     }
 
@@ -46,13 +48,13 @@ public class PeopleController {
             return "people/new";
         }
 
-        personDAO.save(person);
+        this.personDAO.save(person);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", this.personDAO.show(id));
         return "people/edit";
     }
 
@@ -64,13 +66,13 @@ public class PeopleController {
             return "people/edit";
         }
 
-        personDAO.update(person, id);
+        this.personDAO.update(person, id);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        personDAO.delete(id);
+        this.personDAO.delete(id);
         return "redirect:/people";
     }
 
