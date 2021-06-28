@@ -1,7 +1,7 @@
 package com.in3des.springlesson.controllers;
 
 import com.in3des.springlesson.dao.PersonDAO;
-import com.in3des.springlesson.models.Person;
+import com.in3des.springlesson.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+//@RestController
 @RequestMapping("/people")
 public class PeopleController {
 
@@ -20,6 +21,14 @@ public class PeopleController {
     public PeopleController(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
+
+
+//    private final PeopleService peopleService;
+
+//    public PeopleController(PeopleService peopleService) {
+//        this.peopleService = peopleService;
+//    }
+
 
     @GetMapping()
     public String index(Model model) {

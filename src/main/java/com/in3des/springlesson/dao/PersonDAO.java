@@ -1,48 +1,76 @@
 package com.in3des.springlesson.dao;
 
-import com.in3des.springlesson.models.Person;
+import com.in3des.springlesson.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import java.sql.*;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
-//@PropertySource("classpath:db.properties")
+//@Component
+@Service
 public class PersonDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    @PersistenceContext // or even @Autowired
+    private EntityManager em;
 
-//    @Autowired
-//    private static Environment env;
+//    public static EntityManager getEntityManager() {
+//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.in3des.springlesson.entity");
+//        return emf.createEntityManager();
+//    }
 
-    @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+
 
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+//        EntityManager em = getEntityManager();
+        return em.createNativeQuery("SELECT * FROM Person").getResultList();
+//        List<Person> people = em.createQuery("SELECT person FROM Person where ")
+//                .setParameter(1, "English")
+//                .getResultList();
+//        return personRepository.findAll();
+//        return people;
+
+//        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person show(final int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+//        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class, id);
+//        em.detach(person);
+        return person;
+//        return personRepository.getById(id);
+//        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
 
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person VALUES (1, ?, ?, ?)", person.getName(), person.getSurname(), person.getAge());
+        em.persist(person);
+//        personRepository.save(person);
+//        jdbcTemplate.update("INSERT INTO Person VALUES (1, ?, ?, ?)", person.getName(), person.getSurname(), person.getAge());
     }
 
     public void update(Person updatedPerson, int id) {
-        jdbcTemplate.update("UPDATE Person SET name=?, surname=?, age=? WHERE id=?", updatedPerson.getName(), updatedPerson.getSurname(),
-                updatedPerson.getAge(), id);
+        Person person = em.find(Person.class, id);
+        person.setName(updatedPerson.getName());
+        person.setSurname(updatedPerson.getSurname());
+        person.setAge(updatedPerson.getAge());
+        em.getTransaction().commit();
+
+//        personRepository.
+//        jdbcTemplate.update("UPDATE Person SET name=?, surname=?, age=? WHERE id=?", updatedPerson.getName(), updatedPerson.getSurname(),
+//                updatedPerson.getAge(), id);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
+        Person person = em.find(Person.class, id);
+        em.remove(person);
+//        personRepository.getById(id);
+//        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
 
 
