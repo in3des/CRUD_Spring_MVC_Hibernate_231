@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 //import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +23,7 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
+//@EnableJpaRepositories(basePackages="com.in3des.springlesson", entityManagerFactoryRef="emf")
 public class DBConfig {
 
     @Autowired
@@ -105,22 +107,42 @@ public class DBConfig {
 //    }
 
 
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean() {
+//        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+//        hibernateJpaVendorAdapter.setGenerateDdl(true);
+//        hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
+//        hibernateJpaVendorAdapter.setShowSql(true);
+//        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+//                new LocalContainerEntityManagerFactoryBean();
+//        entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+//        entityManagerFactoryBean.setDataSource(dataSource());
+//        entityManagerFactoryBean.setPackagesToScan("com.in3des.springlesson");
+//        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+//        return entityManagerFactoryBean;
+//    }
+
+    /*
+    last updated config
+     */
+
     @Bean
     public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         hibernateJpaVendorAdapter.setGenerateDdl(true);
         hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
         hibernateJpaVendorAdapter.setShowSql(true);
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
+        LocalContainerEntityManagerFactoryBean emf =
                 new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdapter);
-        entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPackagesToScan("com.in3des.springlesson");
-        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        return entityManagerFactoryBean;
+        emf.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+        emf.setDataSource(dataSource());
+        emf.setPackagesToScan("com.in3des.springlesson");
+        emf.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        return emf;
     }
+
     @Bean
-    public JpaTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(getLocalContainerEntityManagerFactoryBean().getObject());
         return jpaTransactionManager;

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 public class PeopleController {
 
 
+    @Qualifier("jpaPersonDAO")
     private final PersonDAO personDAO;
 
     @Autowired
