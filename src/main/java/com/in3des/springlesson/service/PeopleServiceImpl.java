@@ -2,6 +2,7 @@ package com.in3des.springlesson.service;
 
 import com.in3des.springlesson.dao.PersonDAO;
 import com.in3des.springlesson.entity.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,9 +11,10 @@ import java.util.List;
 @Service
 public class PeopleServiceImpl implements PeopleService {
 
-    private PersonDAO personDAO;
+    private final PersonDAO personDAO;
 
-    public void setPersonDAO(PersonDAO personDAO) {
+    @Autowired
+    public PeopleServiceImpl(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
 
@@ -24,7 +26,7 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     @Transactional
-    public Person show(final int id) {
+    public Person show(final Long id) {
         return this.personDAO.show(id);
     }
 
@@ -36,13 +38,13 @@ public class PeopleServiceImpl implements PeopleService {
 
     @Override
     @Transactional
-    public void update(Person updatedPerson, int id) {
+    public void update(Person updatedPerson, Long id) {
         this.personDAO.update(updatedPerson, id);
     }
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public void delete(Long id) {
         this.personDAO.delete(id);
     }
 }

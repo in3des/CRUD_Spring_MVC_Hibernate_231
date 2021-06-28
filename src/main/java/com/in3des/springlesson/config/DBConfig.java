@@ -1,5 +1,6 @@
 package com.in3des.springlesson.config;
 
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -112,7 +113,8 @@ public class DBConfig {
                 new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setJpaVendorAdapter(hibernateJpaVendorAdapter);
         entityManagerFactoryBean.setDataSource(dataSource());
-        entityManagerFactoryBean.setPackagesToScan("com.in3des.springlesson.entity");
+        entityManagerFactoryBean.setPackagesToScan("com.in3des.springlesson");
+        entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         return entityManagerFactoryBean;
     }
     @Bean

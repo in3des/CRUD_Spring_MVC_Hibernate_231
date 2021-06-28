@@ -20,7 +20,7 @@ public class PersonDAOImpl implements PersonDAO {
     }
 
     @Override
-    public Person show(final int id) {
+    public Person show(final Long id) {
         Person person = em.find(Person.class, id);
         return person;
     }
@@ -35,7 +35,7 @@ public class PersonDAOImpl implements PersonDAO {
 
 //    @Transactional
     @Override
-    public void update(Person updatedPerson, int id) {
+    public void update(Person updatedPerson, Long id) {
 //        em.getTransaction().begin();
         Person person = em.find(Person.class, id);
         person.setName(updatedPerson.getName());
@@ -48,7 +48,7 @@ public class PersonDAOImpl implements PersonDAO {
 
 //    @Transactional
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
 //        em.getTransaction().begin();
         Person person = em.find(Person.class, id);
         em.remove(person);
