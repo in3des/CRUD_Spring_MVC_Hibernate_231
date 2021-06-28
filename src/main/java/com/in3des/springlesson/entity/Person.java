@@ -1,8 +1,5 @@
 package com.in3des.springlesson.entity;
 
-
-
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
