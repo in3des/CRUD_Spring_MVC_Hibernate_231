@@ -17,13 +17,14 @@ import javax.validation.Valid;
 public class PeopleController {
 
 
-    @Qualifier("jpaPersonDAO")
-    private final PersonDAO personDAO;
-
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
-        this.personDAO = personDAO;
-    }
+    @Qualifier("jpaPersonDAO")
+    private PersonDAO personDAO;
+
+//    @Autowired
+//    public PeopleController(PersonDAO personDAO) {
+//        this.personDAO = personDAO;
+//    }
 
     @GetMapping()
     public String index(Model model) {
