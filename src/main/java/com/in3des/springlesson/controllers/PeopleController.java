@@ -1,5 +1,6 @@
 package com.in3des.springlesson.controllers;
 
+import com.in3des.springlesson.dao.JpaPersonDAO;
 import com.in3des.springlesson.dao.PersonDAO;
 import com.in3des.springlesson.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
