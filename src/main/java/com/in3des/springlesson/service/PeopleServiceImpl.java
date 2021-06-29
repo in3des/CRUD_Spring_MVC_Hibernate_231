@@ -20,13 +20,11 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-//    @Transactional
     public List<Person> index() {
         return personDAO.index();
     }
 
     @Override
-//    @Transactional
     public Person show(final Long id) {
         return personDAO.show(id);
     }

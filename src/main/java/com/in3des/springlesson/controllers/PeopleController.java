@@ -1,11 +1,8 @@
 package com.in3des.springlesson.controllers;
 
-//import com.in3des.springlesson.dao.JpaPersonDAO;
-import com.in3des.springlesson.dao.PersonDAO;
 import com.in3des.springlesson.entity.Person;
 import com.in3des.springlesson.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,7 +42,6 @@ public class PeopleController {
 
     @PostMapping()
     public String createPerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
-//        public String createPerson(@ModelAttribute("person") Person person, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "people/new";
@@ -63,7 +59,6 @@ public class PeopleController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-//    public String update(@ModelAttribute("person") Person person, BindingResult bindingResult,
                          @PathVariable("id") Long id) {
 
         if (bindingResult.hasErrors()) {

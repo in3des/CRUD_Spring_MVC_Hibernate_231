@@ -1,6 +1,5 @@
 package com.in3des.springlesson.config;
 
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Objects;
 import java.util.Properties;
 
 
@@ -29,8 +27,7 @@ public class DBConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName(env.getProperty("db.driver"));
-        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("db.driver")));
+        dataSource.setDriverClassName(env.getProperty("db.driver"));
         dataSource.setUrl(env.getProperty("db.url"));
         dataSource.setUsername(env.getProperty("db.username"));
         dataSource.setPassword(env.getProperty("db.password"));
@@ -65,8 +62,7 @@ public class DBConfig {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
-//        entityManager.setPackagesToScan(env.getProperty("db.entity.package"));
-        em.setPackagesToScan("com.in3des.springlesson.entity");
+        em.setPackagesToScan(env.getProperty("db.entity.package"));
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(getHibernateProperties());
 
@@ -120,14 +116,6 @@ public class DBConfig {
 
 
 //    @Bean
-//    public HibernateTransactionManager getTransactionManager() {
-//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-//        transactionManager.setSessionFactory(getSessionFactory().getObject());
-//        return transactionManager;
-//    }
-
-
-//    @Bean
 //    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean() {
 //        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
 //        hibernateJpaVendorAdapter.setGenerateDdl(true);
@@ -142,9 +130,6 @@ public class DBConfig {
 //        return entityManagerFactoryBean;
 //    }
 
-    /*
-    last updated config
-     */
 
 
 //    @Bean
