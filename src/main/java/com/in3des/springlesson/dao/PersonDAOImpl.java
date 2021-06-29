@@ -11,9 +11,9 @@
 //import java.util.List;
 //
 //
-////@Repository
+//@Repository
 ////@Service
-//@Component
+////@Component
 //public class PersonDAOImpl implements PersonDAO {
 //
 //    @PersistenceContext // or even @Autowired

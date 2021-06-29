@@ -17,33 +17,33 @@
 //    }
 //
 //    @Override
-//    @Transactional
+////    @Transactional
 //    public List<Person> index() {
-//        return this.personDAO.index();
+//        return personDAO.index();
 //    }
 //
 //    @Override
-//    @Transactional
+////    @Transactional
 //    public Person show(final Long id) {
-//        return this.personDAO.show(id);
+//        return personDAO.show(id);
 //    }
 //
 //    @Override
 //    @Transactional
 //    public void save(Person person) {
-//        this.personDAO.save(person);
+//        personDAO.save(person);
 //    }
 //
 //    @Override
 //    @Transactional
 //    public void update(Person updatedPerson, Long id) {
-//        this.personDAO.update(updatedPerson, id);
+//        personDAO.update(updatedPerson, id);
 //    }
 //
 //
 //    @Transactional
 //    @Override
 //    public void delete(Long id) {
-//        this.personDAO.delete(id);
+//        personDAO.delete(id);
 //    }
 //}

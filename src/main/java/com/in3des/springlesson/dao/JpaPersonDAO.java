@@ -2,7 +2,6 @@ package com.in3des.springlesson.dao;
 
 import com.in3des.springlesson.entity.Person;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -10,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 
-//@Component
-@Service
+@Component
+//@Service
 //@Transactional(readOnly = true)
 public class JpaPersonDAO implements PersonDAO {
 
@@ -19,13 +18,13 @@ public class JpaPersonDAO implements PersonDAO {
     private EntityManager em;
 
     @Override
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public List<Person> index() {
         return em.createQuery("SELECT person FROM Person person", Person.class).getResultList();
     }
 
     @Override
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public Person show(final Long id) {
         return em.find(Person.class, id);
     }

@@ -12,29 +12,36 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
 
-    @Autowired
-    @Qualifier("jpaPersonDAO")
-    private PersonDAO personDAO;
-
 //    @Autowired
-//    public PeopleController(PersonDAO personDAO) {
+    @Qualifier("jpaPersonDAO")
+    private final PersonDAO personDAO;
+
+    @Autowired
+    public PeopleController(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+//    private PeopleService personDAO;
+//
+//    public PeopleController(PeopleService personDAO) {
 //        this.personDAO = personDAO;
 //    }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", this.personDAO.index());
+        model.addAttribute("people", personDAO.index());
         return "people/index";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("person", this.personDAO.show(id));
+        model.addAttribute("person", personDAO.show(id));
         return "people/show";
     }
 
@@ -51,13 +58,13 @@ public class PeopleController {
             return "people/new";
         }
 
-        this.personDAO.save(person);
+        personDAO.save(person);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("person", this.personDAO.show(id));
+        model.addAttribute("person", personDAO.show(id));
         return "people/edit";
     }
 
@@ -69,13 +76,13 @@ public class PeopleController {
             return "people/edit";
         }
 
-        this.personDAO.update(person, id);
+        personDAO.update(person, id);
         return "redirect:/people";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Long id) {
-        this.personDAO.delete(id);
+        personDAO.delete(id);
         return "redirect:/people";
     }
 
