@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotEmpty;
+//import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="person")
@@ -28,19 +31,6 @@ public class Person {
     private int age;
 
     public Person() {}
-
-//    public Person(int id, String name, String surname, int age) {
-//        this.id = id;
-//        this.name = name;
-//        this.surname = surname;
-//        this.age = age;
-//    }
-
-//    public Person(String name, String surname, int age) {
-//        this.name = name;
-//        this.surname = surname;
-//        this.age = age;
-//    }
 
     public Long getId() {
         return id;

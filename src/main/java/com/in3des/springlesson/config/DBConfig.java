@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Objects;
+import java.util.Properties;
 
 
 @Configuration
@@ -36,50 +37,50 @@ public class DBConfig {
         return dataSource;
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean() {
-        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-        hibernateJpaVendorAdapter.setGenerateDdl(true);
-        hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
-        hibernateJpaVendorAdapter.setShowSql(true);
-        LocalContainerEntityManagerFactoryBean emf =
-                new LocalContainerEntityManagerFactoryBean();
-        emf.setJpaVendorAdapter(hibernateJpaVendorAdapter);
-        emf.setDataSource(dataSource());
-        emf.setPackagesToScan("com.in3des.springlesson");
-        emf.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        return emf;
-    }
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean() {
+//        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+//        hibernateJpaVendorAdapter.setGenerateDdl(true);
+//        hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
+//        hibernateJpaVendorAdapter.setShowSql(true);
+//        LocalContainerEntityManagerFactoryBean emf =
+//                new LocalContainerEntityManagerFactoryBean();
+//        emf.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+//        emf.setDataSource(dataSource());
+//        emf.setPackagesToScan("com.in3des.springlesson.entity");
+//        emf.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+//        return emf;
+//    }
 
     @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(getLocalContainerEntityManagerFactoryBean().getObject());
+        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return jpaTransactionManager;
     }
 
 //
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        LocalContainerEntityManagerFactoryBean em
-//                = new LocalContainerEntityManagerFactoryBean();
-//        em.setDataSource(dataSource());
-////        entityManager.setPackagesToScan(env.getProperty("db.entity.package"));
-//        em.setPackagesToScan("com.in3des.springlesson.entity");
-//        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-//        em.setJpaProperties(getHibernateProperties());
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em
+                = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+//        entityManager.setPackagesToScan(env.getProperty("db.entity.package"));
+        em.setPackagesToScan("com.in3des.springlesson.entity");
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setJpaProperties(getHibernateProperties());
+
+        return em;
+    }
 //
-//        return em;
-//    }
-//
-//    Properties getHibernateProperties() {
-//        Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-//        properties.setProperty("hibernate.show_sql", "true");
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//
-//        return properties;
-//    }
+    Properties getHibernateProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.hbm2ddl.auto", "update");
+        properties.setProperty("hibernate.show_sql", "true");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+
+        return properties;
+    }
 //
 //    @Bean
 //    public JpaTransactionManager transactionManager() {
